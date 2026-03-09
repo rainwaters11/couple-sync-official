@@ -31,6 +31,8 @@ interface SyncOfTheDayTabProps {
   /** Lifted state: controlled selected date from App.tsx so it knows the active week */
   selectedDate?: Date;
   onSelectedDateChange?: (date: Date) => void;
+  /** Opens the RoomSyncPanel — used by the 'Invite Partner' link in the Room Status indicator */
+  onOpenRoomPanel?: () => void;
 }
 
 export default function SyncOfTheDayTab({
@@ -40,6 +42,7 @@ export default function SyncOfTheDayTab({
   onDismissOnboarding,
   selectedDate: controlledSelectedDate,
   onSelectedDateChange,
+  onOpenRoomPanel,
 }: SyncOfTheDayTabProps) {
   const today = new Date();
   // Support both controlled (lifted) and uncontrolled date state.
@@ -207,6 +210,41 @@ export default function SyncOfTheDayTab({
           </p>
         </div>
         <CoupleSyncEmblem compact />
+      </div>
+
+      {/* Room Status Indicator */}
+      <div className="flex items-center gap-2 px-1" data-ocid="sync.panel">
+        {isInRoom ? (
+          <>
+            {/* Pulse-animated green dot */}
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
+            </span>
+            <span className="text-xs font-semibold text-green-700">
+              Synced with Partner
+            </span>
+          </>
+        ) : (
+          <>
+            {/* Static gray dot */}
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-gray-300" />
+            </span>
+            <span className="text-xs font-medium text-gray-500">
+              Local Mode
+            </span>
+            <span className="text-gray-300 text-xs">·</span>
+            <button
+              type="button"
+              onClick={onOpenRoomPanel}
+              className="text-xs font-semibold text-rose-500 hover:text-rose-700 transition-colors underline underline-offset-2"
+              data-ocid="room.open_modal_button"
+            >
+              Invite Partner
+            </button>
+          </>
+        )}
       </div>
 
       {/* Day navigation */}

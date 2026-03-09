@@ -454,6 +454,7 @@ function App() {
                 onDismissOnboarding={handleDismissOnboarding}
                 selectedDate={activeDate}
                 onSelectedDateChange={setActiveDate}
+                onOpenRoomPanel={() => setShowRoomPanel(true)}
               />
             </TabsContent>
 
